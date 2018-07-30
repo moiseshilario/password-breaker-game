@@ -1,0 +1,83 @@
+@import './colors.scss';
+@import url('https://fonts.googleapis.com/css?family=Play|Press+Start+2P|Titillium+Web');
+
+body {
+  background-color: #333;
+  color: $white;
+  font-family: 'Press Start 2P', cursive;
+
+  button {
+    font-family: 'Press Start 2P', cursive;
+  }
+
+  .game {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    &__title {
+      color: $white;
+      text-align: center;
+    }
+
+    .button {
+      border: none;
+      color: white;
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      font-size: 16px;
+      min-width: 200px;
+    }
+
+    .pw-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      &__button {
+        background-color: #555;
+      }
+    }
+
+    .numbers-container {
+      display: flex;
+      justify-content: space-between;
+      padding: 0;
+      flex-wrap: wrap;
+      max-width: 430px;
+    }
+
+    .number {
+      list-style: none;
+      width: 20px;
+      height: 20px;
+      margin: 10px;
+      padding: 20px;
+      border-radius: 3px;
+      background-color: #555;
+      text-align: center;
+      border: 2px solid #888;
+
+      @media (max-width: 500px) {
+        margin: 5px
+      }
+    }
+
+    .disabled {
+      background-color: #444;
+    }
+
+    .attempt {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+
+      &__button {
+        background-color: #4CAF50; /* Green */
+      }
+    }
+  }
+}
