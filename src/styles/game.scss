@@ -2,9 +2,9 @@
 @import url('https://fonts.googleapis.com/css?family=Play|Press+Start+2P|Titillium+Web');
 
 body {
-  background-color: #333;
   color: $white;
   font-family: 'Press Start 2P', cursive;
+  margin: 0;
 
   button {
     font-family: 'Press Start 2P', cursive;
@@ -13,12 +13,19 @@ body {
   .game {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
+    background: linear-gradient($game-background, #222);
+    min-height: 100vh;
+    height: 100%;
 
     &__title {
       color: $white;
       text-align: center;
+    }
+
+    .error {
+      color: $error;
     }
 
     .button {
@@ -36,11 +43,28 @@ body {
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      position: relative;
+
+      .lock {
+        height: 60px;
+        width: 300px;
+        background: url('../assets/images/lock.png') center no-repeat;
+        background-color: #888;
+        position: absolute;
+        top: 0;
+        opacity: 1;
+        transition: opacity .1s ease-out;
+
+        &.hide {
+          opacity: 0;
+        }
+      }
 
       &__button {
         background-color: #555;
         font-size: 12px;
         transition: background-color .2s ease;
+        margin-top: 30px;
 
         &:hover {
           background-color: #444;
@@ -82,7 +106,9 @@ body {
       flex-direction: column;
 
       &__button {
-        background-color: $green; /* Green */
+        background-color: $green;
+        margin-bottom: 50px;
+        margin-top: 50px;
       }
 
       &__number[type=number] {
@@ -90,25 +116,45 @@ body {
         border: none;
         border-bottom: 2px solid $green;
         border-radius: 0;
-        margin-bottom: 30px;
         padding: 10px;
         font-size: 30px;
         background-color: transparent;
-        color: $green;
+        color: $white;
         font-family: 'Press Start 2P', cursive;
         max-width: 150px;
         transition: border-bottom .2s ease;
       }
 
-      input[type=number]::-webkit-inner-spin-button, 
+      input[type=number]::-webkit-inner-spin-button,
       input[type=number]::-webkit-outer-spin-button {
-        -webkit-appearance: none; 
-        margin: 0; 
+        -webkit-appearance: none;
+        margin: 0;
       }
 
       input:focus {
         outline: none;
         border-bottom: 3px solid $green;
+      }
+
+      &__list {
+        list-style-type: none;
+        padding: 0;
+        width: 100%;
+      }
+
+      &__item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid #888;
+
+        .report__close {
+          color: $close;
+        }
+
+        .report__match {
+          color: $match;
+        }
       }
     }
   }

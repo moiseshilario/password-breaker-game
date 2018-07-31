@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-// import { Attempt } from './attempt'
+import { AttemptItem } from './attempt-item'
 // import Numbers from './numbers'
 
 const passwordLength = 5
@@ -13,7 +13,8 @@ export default class Game extends Component {
       password: this.getRandomNumber(),
       attempts: [],
       lengthError: false,
-      repeatedError: false
+      repeatedError: false,
+      showPassword: false
     }
   }
 
@@ -62,7 +63,8 @@ export default class Game extends Component {
     }
 
     const currentAttempt = {
-      attemptNumber: numberString,
+      attemptNumber: this.state.attempts.length + 1,
+      password: numberString,
       close,
       match
     }
@@ -70,8 +72,6 @@ export default class Game extends Component {
     this.setState({
       attempts: [...this.state.attempts, currentAttempt]
     })
-
-    this.createAttempt()
   }
 
   handleNewAttempt() {
@@ -99,13 +99,21 @@ export default class Game extends Component {
     return true
   }
 
+  toggleShowPassword() {
+    this.setState({ showPassword: !this.state.showPassword })
+  }
+
   render() {
-    const { password, repeatedError, lengthError } = this.state
+    const { password, attempts, repeatedError, lengthError, showPassword } = this.state
     return (
       <div className='game'>
-        <h1 className='game__title'>Password Breaker</h1>
         <div className='game__content'>
+          <h1 className='game__title'>Password Breaker</h1>
           <div className='pw-container'>
+            <div
+              className={ showPassword ? 'lock' : 'lock hide'}
+              onClick={() => this.toggleShowPassword()}>
+            </div>
             <h2 className='pw-container__password'>{password}</h2>
             <button className='button pw-container__button'
               onClick={() => this.handleNewPassword()}
@@ -114,9 +122,21 @@ export default class Game extends Component {
             </button>
           </div>
           <div className='attempt'>
-            <input type="number" className="attempt__number"/>
-            { repeatedError ? <p>Cannot use repeated numbers!</p> : '' }
-            { lengthError ? <p>The password needs to be 5 numbers!</p> : ''}
+            <ul className='attempt__list'>
+              {
+                attempts.map((attempt, index) =>
+                  <AttemptItem key={index}
+                    attemptNumber={attempt.attemptNumber}
+                    password={attempt.password}
+                    close={attempt.close}
+                    match={attempt.match}
+                  />
+                )
+              }
+            </ul>
+            <input type='number' className='attempt__number'/>
+            { repeatedError ? <p className='error'>Cannot use repeated numbers!</p> : '' }
+            { lengthError ? <p className='error'>The password needs to be 5 numbers!</p> : ''}
             <button onClick={() => this.handleNewAttempt()} className='button attempt__button'>Hack</button>
           </div>
         </div>
