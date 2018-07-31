@@ -37,6 +37,10 @@ export default class Game extends Component {
   }
 
   handleNewAttempt() {
+    const inputValue = document.querySelector('.attempt__number').value
+    if(!this.validateAttempt(inputValue)){
+      this.setState({ lengthError: true })
+    }
 
     
   }
@@ -48,12 +52,6 @@ export default class Game extends Component {
     }
 
     return true;
-  }
-
-  renderAttempt() {
-    <li>
-      <input type='number'/>
-    </li>
   }
 
   render() {
@@ -70,10 +68,8 @@ export default class Game extends Component {
               Generate new Password
             </button>
           </div>
-          <ul>{this.renderAttempt()}</ul>
           <div className='attempt'>
-            <h2 className="attempt__number">{}</h2>
-            {<Numbers />}
+            <input type="number" className="attempt__number"/>
             <button onClick={() => this.handleNewAttempt()} className='button attempt__button'>Hack</button>
           </div>
         </div>
