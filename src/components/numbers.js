@@ -16,13 +16,13 @@ export default class Numbers extends Component {
   }
 
   renderListItems() {
-    let listItems = [];
+    let listItems = []
 
     for (let index = 0; index <= 9; index++) {
       listItems = [...listItems,
         <li
           key={index}
-          className={this.state.active[index] ? 'number': 'number disabled'}
+          className={this.state.active[index] ? 'number' : 'number disabled'}
           onClick={() => this.handleClick(index)}
         >{index}</li>
       ]
@@ -30,7 +30,7 @@ export default class Numbers extends Component {
 
     return listItems
   }
-  
+
   render() {
     return (
       <ul className='numbers-container'>{this.renderListItems()}</ul>
