@@ -13,8 +13,8 @@ export const AttemptItem = ({ attemptNumber, password, close, match }) => (
 )
 
 AttemptItem.propTypes = {
-  attemptNumber: PropTypes.string.isRequired,
+  attemptNumber: PropTypes.number.isRequired,
   password: PropTypes.string.isRequired,
-  close: PropTypes.string.isRequired,
-  match: PropTypes.string.isRequired
+  close: PropTypes.number.isRequired,
+  match: PropTypes.number.isRequired
 }
