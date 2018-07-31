@@ -15,9 +15,12 @@
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.54",
     "@babel/preset-react": "^7.0.0-beta.54",
+    "babel-eslint": "8",
     "babel-loader": "8.0.0-beta.0",
     "babel-preset-stage-2": "^6.24.1",
     "css-loader": "^1.0.0",
+    "eslint": "^5.2.0",
+    "eslint-plugin-react": "^7.10.0",
     "node-sass": "^4.9.2",
     "react-hot-loader": "^4.3.4",
     "sass-loader": "^7.0.3",
