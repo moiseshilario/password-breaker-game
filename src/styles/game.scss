@@ -10,6 +10,10 @@ body {
     font-family: 'Press Start 2P', cursive;
   }
 
+  .hide {
+    display: none !important;
+  }
+
   .game {
     display: flex;
     flex-direction: column;
@@ -19,9 +23,30 @@ body {
     min-height: 100vh;
     height: 100%;
 
+    &__overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0,255,0, .1);
+      z-index: 2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
     &__title {
       color: $white;
       text-align: center;
+    }
+
+    &__win {
+      width: 50%;
+      text-align: center;
+      background: #222;
+      border: 1px solid green;
+      padding: 30px;
     }
 
     .error {
@@ -54,10 +79,6 @@ body {
         top: 0;
         opacity: 1;
         transition: opacity .1s ease-out;
-
-        &.hide {
-          opacity: 0;
-        }
       }
 
       &__button {

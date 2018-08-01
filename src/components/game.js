@@ -14,7 +14,8 @@ export default class Game extends Component {
       attempts: [],
       lengthError: false,
       repeatedError: false,
-      showPassword: false
+      showPassword: false,
+      win: false
     }
 
     this.handleKeyPress = this.handleKeyPress.bind(this)
@@ -37,7 +38,12 @@ export default class Game extends Component {
   }
 
   handleNewPassword() {
-    this.setState({ password: this.getRandomNumber() })
+    this.setState({
+      password: this.getRandomNumber(),
+      win: false,
+      attempts: []
+    })
+    document.querySelector('.attempt__number').value = ''
   }
 
   checkPassword(numberString) {
@@ -71,9 +77,11 @@ export default class Game extends Component {
       match
     }
 
-    this.setState({
-      attempts: [...this.state.attempts, currentAttempt]
-    })
+    this.setState({ attempts: [...this.state.attempts, currentAttempt] })
+
+    if (match === 5) {
+      this.setState({ win: true })
+    }
   }
 
   handleNewAttempt() {
@@ -112,22 +120,28 @@ export default class Game extends Component {
   }
 
   render() {
-    const { password, attempts, repeatedError, lengthError, showPassword } = this.state
+    const { win, password, attempts, repeatedError, lengthError, showPassword } = this.state
     return (
       <div className='game'>
         <div className='game__content'>
           <h1 className='game__title'>Password Breaker</h1>
+          <div className={ win ? 'game__overlay' : 'game__overlay hide'}>
+            <div className='game__win'>
+              <h2 className="game__win__text">Congratulations!</h2>
+              <h3 className="game__win__text">You hacked the password</h3>
+              <button className='button pw-container__button'
+                onClick={() => this.handleNewPassword()}
+              >
+                Generate new Password
+              </button>
+            </div>
+          </div>
           <div className='pw-container'>
             <div
-              className={ showPassword ? 'lock hide' : 'lock'}
+              className={ showPassword || win ? 'lock hide' : 'lock'}
               onClick={() => this.toggleShowPassword()}>
             </div>
             <h2 className='pw-container__password'>{password}</h2>
-            <button className='button pw-container__button'
-              onClick={() => this.handleNewPassword()}
-            >
-              Generate new Password
-            </button>
           </div>
           <div className='attempt'>
             <ul className='attempt__list'>
