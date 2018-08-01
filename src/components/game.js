@@ -16,6 +16,8 @@ export default class Game extends Component {
       repeatedError: false,
       showPassword: false
     }
+
+    this.handleKeyPress = this.handleKeyPress.bind(this)
   }
 
   getRandomNumber() {
@@ -103,6 +105,12 @@ export default class Game extends Component {
     this.setState({ showPassword: !this.state.showPassword })
   }
 
+  handleKeyPress(event) {
+    if (event.key === 'Enter') {
+      this.handleNewAttempt()
+    }
+  }
+
   render() {
     const { password, attempts, repeatedError, lengthError, showPassword } = this.state
     return (
@@ -134,7 +142,7 @@ export default class Game extends Component {
                 )
               }
             </ul>
-            <input type='number' className='attempt__number'/>
+            <input type='number' className='attempt__number' onKeyPress={this.handleKeyPress}/>
             { repeatedError ? <p className='error'>Cannot use repeated numbers!</p> : '' }
             { lengthError ? <p className='error'>The password needs to be 5 numbers!</p> : ''}
             <button onClick={() => this.handleNewAttempt()} className='button attempt__button'>Hack</button>
