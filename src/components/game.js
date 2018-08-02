@@ -142,7 +142,9 @@ export default class Game extends Component {
               className={ showPassword || win ? 'lock hide' : 'lock'}
               onClick={() => this.toggleShowPassword()}>
             </div>
-            <h2 className='pw-container__password'>{password}</h2>
+            <h2 className='pw-container__password'
+              onClick={() => this.toggleShowPassword()}
+            >{password}</h2>
           </div>
           <div className='attempt'>
             <input type='number' className='attempt__number' onKeyPress={this.handleKeyPress}/>
