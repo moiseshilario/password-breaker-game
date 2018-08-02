@@ -41,7 +41,8 @@ export default class Game extends Component {
     this.setState({
       password: this.getRandomNumber(),
       win: false,
-      attempts: []
+      attempts: [],
+      showPassword: false
     })
     document.querySelector('.attempt__number').value = ''
   }
@@ -128,7 +129,7 @@ export default class Game extends Component {
           <div className={ win ? 'game__overlay' : 'game__overlay hide'}>
             <div className='game__win'>
               <h2 className="game__win__text">Congratulations!</h2>
-              <h3 className="game__win__text">You hacked the password</h3>
+              <h3 className="game__win__subtext">You hacked the password</h3>
               <button className='button pw-container__button'
                 onClick={() => this.handleNewPassword()}
               >
