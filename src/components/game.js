@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
-import Numbers from './numbers'
+
+import { AttemptItem } from './attempt-item'
+// import Numbers from './numbers'
 
 const passwordLength = 5
 const repeatedNumberRegex = /(\d)\d*\1/
@@ -12,8 +14,11 @@ export default class Game extends Component {
       attempts: [],
       lengthError: false,
       repeatedError: false,
-      inputValue: ''
+      showPassword: false,
+      win: false
     }
+
+    this.handleKeyPress = this.handleKeyPress.bind(this)
   }
 
   getRandomNumber() {
@@ -25,7 +30,7 @@ export default class Game extends Component {
       const randomIndex = Math.floor(Math.random() * availableNumbers.length)
       const chosenNumber = availableNumbers[randomIndex]
       password.push(chosenNumber)
-      passwordString += chosenNumber;
+      passwordString += chosenNumber
       availableNumbers = availableNumbers.filter(number => number !== chosenNumber)
     }
 
@@ -33,47 +38,127 @@ export default class Game extends Component {
   }
 
   handleNewPassword() {
-    this.setState({ password: this.getRandomNumber() })
+    this.setState({
+      password: this.getRandomNumber(),
+      win: false,
+      attempts: []
+    })
+    document.querySelector('.attempt__number').value = ''
+  }
+
+  checkPassword(numberString) {
+    const numberArray = []
+    const passwordArray = []
+    for (let index = 0; index < passwordLength; index++) {
+      numberArray.push(numberString.charAt(index))
+      passwordArray.push(this.state.password.charAt(index))
+    }
+
+    let close = 0
+    let match = 0
+
+    for (let index = 0; index < passwordLength; index++) {
+      const currentNumber = numberArray[index]
+      if (currentNumber === passwordArray[index]) {
+        match += 1
+      } else {
+        for (let index2 = 0; index2 < passwordLength; index2++) {
+          if (currentNumber === passwordArray[index2] && index !== index2) {
+            close += 1
+          }
+        }
+      }
+    }
+
+    const currentAttempt = {
+      attemptNumber: this.state.attempts.length + 1,
+      password: numberString,
+      close,
+      match
+    }
+
+    this.setState({ attempts: [...this.state.attempts, currentAttempt] })
+
+    if (match === 5) {
+      this.setState({ win: true })
+    }
   }
 
   handleNewAttempt() {
+    const inputValue = document.querySelector('.attempt__number').value
+    if (!this.validateAttempt(inputValue)) {
+      return
+    }
 
-    
+    this.checkPassword(inputValue)
   }
 
   validateAttempt(number) {
-    if(number.length < 5) {
+    if (number.length !== 5) {
       this.setState({ lengthError: true })
-      return false;
+      return false
     }
+    this.setState({ lengthError: false })
 
-    return true;
+    if (number.match(repeatedNumberRegex)) {
+      this.setState({ repeatedError: true })
+      return false
+    }
+    this.setState({ repeatedError: false })
+
+    return true
   }
 
-  renderAttempt() {
-    <li>
-      <input type='number'/>
-    </li>
+  toggleShowPassword() {
+    this.setState({ showPassword: !this.state.showPassword })
+  }
+
+  handleKeyPress(event) {
+    if (event.key === 'Enter') {
+      this.handleNewAttempt()
+    }
   }
 
   render() {
-    const { password,inputValue, repeatedError } = this.state
+    const { win, password, attempts, repeatedError, lengthError, showPassword } = this.state
     return (
       <div className='game'>
-        <h1 className='game__title'>Password Breaker</h1>
         <div className='game__content'>
-          <div className='pw-container'>
-            <h2 className='pw-container__password'>{password}</h2>
-            <button className='button pw-container__button'
-            onClick={() => this.handleNewPassword()}
-            >
-              Generate new Password
-            </button>
+          <h1 className='game__title'>Password Breaker</h1>
+          <div className={ win ? 'game__overlay' : 'game__overlay hide'}>
+            <div className='game__win'>
+              <h2 className="game__win__text">Congratulations!</h2>
+              <h3 className="game__win__text">You hacked the password</h3>
+              <button className='button pw-container__button'
+                onClick={() => this.handleNewPassword()}
+              >
+                Generate new Password
+              </button>
+            </div>
           </div>
-          <ul>{this.renderAttempt()}</ul>
+          <div className='pw-container'>
+            <div
+              className={ showPassword || win ? 'lock hide' : 'lock'}
+              onClick={() => this.toggleShowPassword()}>
+            </div>
+            <h2 className='pw-container__password'>{password}</h2>
+          </div>
           <div className='attempt'>
-            <h2 className="attempt__number">{}</h2>
-            {<Numbers />}
+            <ul className='attempt__list'>
+              {
+                attempts.map((attempt, index) =>
+                  <AttemptItem key={index}
+                    attemptNumber={attempt.attemptNumber}
+                    password={attempt.password}
+                    close={attempt.close}
+                    match={attempt.match}
+                  />
+                )
+              }
+            </ul>
+            <input type='number' className='attempt__number' onKeyPress={this.handleKeyPress}/>
+            { repeatedError ? <p className='error'>Cannot use repeated numbers!</p> : '' }
+            { lengthError ? <p className='error'>The password needs to be 5 numbers!</p> : ''}
             <button onClick={() => this.handleNewAttempt()} className='button attempt__button'>Hack</button>
           </div>
         </div>
