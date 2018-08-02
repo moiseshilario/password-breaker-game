@@ -30,14 +30,14 @@ module.exports = {
   },
   output: {
     path: `${__dirname}/dist`,
-    publicPath: '/',
+    publicPath: '',
     filename: 'bundle.js'
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       favicon: 'src/assets/images/favicon.ico',
-      template: './dist/index.html'
+      template: './src/index.html'
     })
   ],
   devServer: {
