@@ -19,7 +19,7 @@ body {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    background: linear-gradient($game-background, #222);
+    background: linear-gradient($black, $dark-black);
     min-height: 100vh;
     height: 100%;
 
@@ -29,7 +29,7 @@ body {
       left: 0;
       right: 0;
       bottom: 0;
-      background-color: rgba(0,255,0, .1);
+      background-color: $opacity-black;
       z-index: 2;
       display: flex;
       justify-content: center;
@@ -44,9 +44,25 @@ body {
     &__win {
       width: 50%;
       text-align: center;
-      background: #222;
-      border: 1px solid green;
+      background: $dark-black;
+      border: 3px solid $green;
       padding: 30px;
+
+      @media (max-width: 770px) {
+        width: 70%;
+      }
+
+      &__text {
+        @media (max-width: 770px) {
+          font-size: 16px;
+        }
+      }
+
+      &__subtext {
+        @media (max-width: 770px) {
+          font-size: 14px;
+        }
+      }
     }
 
     .error {
@@ -74,7 +90,7 @@ body {
         height: 60px;
         width: 300px;
         background: url('../assets/images/lock.png') center no-repeat;
-        background-color: #888;
+        background-color: $light-black-1;
         position: absolute;
         top: 0;
         opacity: 1;
@@ -82,7 +98,7 @@ body {
       }
 
       &__button {
-        background-color: #555;
+        background-color: $light-black-2;
         font-size: 12px;
         transition: background-color .2s ease;
         margin-top: 30px;
@@ -108,9 +124,9 @@ body {
       margin: 10px;
       padding: 20px;
       border-radius: 3px;
-      background-color: #555;
+      background-color: $light-black-2;
       text-align: center;
-      border: 2px solid #888;
+      border: 2px solid $light-black-1;
 
       @media (max-width: 500px) {
         margin: 5px
@@ -118,7 +134,7 @@ body {
     }
 
     .disabled {
-      background-color: #444;
+      background-color: $light-black-3;
     }
 
     .attempt {
@@ -126,6 +142,7 @@ body {
       align-items: center;
       flex-direction: column;
       margin-top: 30px;
+      text-align: center;
 
       &__button {
         background-color: $green;
@@ -170,15 +187,15 @@ body {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        border-bottom: 2px solid #888;
+        border-bottom: 2px solid $light-black-1;
         padding: 0 20px;
 
         .report__close {
-          color: $close;
+          color: $green;
         }
 
         .report__match {
-          color: $match;
+          color: $light-green;
         }
       }
     }
