@@ -1,12 +1,12 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react'
+import ReactDOM from 'react-dom'
 import './styles/index.scss'
 
 import Game from './components/game.js'
 
 ReactDOM.render(
   <Game />,
-  document.getElementById("root")
-);
+  document.getElementById('root')
+)
 
-module.hot.accept();
+module.hot.accept()
