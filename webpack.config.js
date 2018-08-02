@@ -1,4 +1,5 @@
 const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
   entry: './src/index.js',
@@ -14,7 +15,7 @@ module.exports = {
         use: ['style-loader', 'css-loader', 'sass-loader']
       },
       {
-        test: /\.png$/,
+        test: /\.(png|ico)$/,
         use: [{
           loader: 'url-loader',
           options: {
@@ -33,7 +34,11 @@ module.exports = {
     filename: 'bundle.js'
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin(),
+    new HtmlWebpackPlugin({
+      favicon: 'src/assets/images/favicon.ico',
+      template: './dist/index.html'
+    })
   ],
   devServer: {
     contentBase: './dist',
