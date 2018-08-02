@@ -144,6 +144,10 @@ export default class Game extends Component {
             <h2 className='pw-container__password'>{password}</h2>
           </div>
           <div className='attempt'>
+            <input type='number' className='attempt__number' onKeyPress={this.handleKeyPress}/>
+            { repeatedError ? <p className='error'>Cannot use repeated numbers!</p> : '' }
+            { lengthError ? <p className='error'>The password needs to be 5 numbers!</p> : ''}
+            <button onClick={() => this.handleNewAttempt()} className='button attempt__button'>Hack</button>
             <ul className='attempt__list'>
               {
                 attempts.map((attempt, index) =>
@@ -156,10 +160,6 @@ export default class Game extends Component {
                 )
               }
             </ul>
-            <input type='number' className='attempt__number' onKeyPress={this.handleKeyPress}/>
-            { repeatedError ? <p className='error'>Cannot use repeated numbers!</p> : '' }
-            { lengthError ? <p className='error'>The password needs to be 5 numbers!</p> : ''}
-            <button onClick={() => this.handleNewAttempt()} className='button attempt__button'>Hack</button>
           </div>
         </div>
       </div>
