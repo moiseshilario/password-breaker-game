@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 import { AttemptItem } from './attempt-item'
-// import Numbers from './numbers'
+import { Rules } from './rules'
 
 const passwordLength = 5
 const repeatedNumberRegex = /(\d)\d*\1/
@@ -15,10 +15,21 @@ export default class Game extends Component {
       lengthError: false,
       repeatedError: false,
       showPassword: false,
-      win: false
+      win: false,
+      firstTime: localStorage.getItem('firstTime') === 'false' ? false : true,
+      openRules: false
     }
 
     this.handleKeyPress = this.handleKeyPress.bind(this)
+    this.handleRuleButtonClick = this.handleRuleButtonClick.bind(this)
+  }
+
+  handleRuleButtonClick() {
+    localStorage.setItem('firstTime', false)
+    this.setState({
+      firstTime: false,
+      openRules: false
+    })
   }
 
   getRandomNumber() {
@@ -121,9 +132,10 @@ export default class Game extends Component {
   }
 
   render() {
-    const { win, password, attempts, repeatedError, lengthError, showPassword } = this.state
+    const { win, password, attempts, repeatedError, lengthError, showPassword, firstTime, openRules } = this.state
     return (
       <div className='game'>
+        { (firstTime || openRules) ? <Rules onClick={this.handleRuleButtonClick}/> : '' }
         <div className='game__content'>
           <h1 className='game__title'>Password Breaker</h1>
           <div className={ win ? 'game__overlay' : 'game__overlay hide'}>
