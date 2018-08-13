@@ -6,6 +6,10 @@ body {
   font-family: 'Press Start 2P', cursive;
   margin: 0;
 
+  &.rules-open {
+    overflow-y: hidden;
+  }
+
   button {
     font-family: 'Press Start 2P', cursive;
   }
@@ -67,6 +71,7 @@ body {
 
     .error {
       color: $error;
+      line-height: 1.5;
     }
 
     .button {
@@ -85,7 +90,15 @@ body {
 
       &:active {
         transform: translateY(4px);
+      }
     }
+
+    .help {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 15px;
+      border: 2px solid;
     }
 
     .rules {
@@ -93,11 +106,14 @@ body {
       padding: 20px;
       line-height: 1.7;
       position: absolute;
-      z-index: 2;
+      z-index: 3;
       background: #222;
       border: 5px solid #4CAF50;
-      top: 50%;
-      transform: translateY(-50%);
+
+      @media (min-width: 500px) {
+        top: 50%;
+        transform: translateY(-50%);
+      }
 
       &__title {
         text-align: center;

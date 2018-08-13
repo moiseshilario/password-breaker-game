@@ -125,6 +125,10 @@ export default class Game extends Component {
     this.setState({ showPassword: !this.state.showPassword })
   }
 
+  toggleShowRules() {
+    this.setState({ openRules: !this.state.openRules })
+  }
+
   handleKeyPress(event) {
     if (event.key === 'Enter') {
       this.handleNewAttempt()
@@ -138,20 +142,20 @@ export default class Game extends Component {
         { (firstTime || openRules) ? <Rules onClick={this.handleRuleButtonClick}/> : '' }
         <div className='game__content'>
           <h1 className='game__title'>Password Breaker</h1>
-          <div className={ win ? 'game__overlay' : 'game__overlay hide'}>
-            <div className='game__win'>
-              <h2 className="game__win__text">Congratulations!</h2>
-              <h3 className="game__win__subtext">You hacked the password</h3>
-              <button className='button pw-container__button'
-                onClick={() => this.handleNewPassword()}
-              >
-                Generate new Password
-              </button>
-            </div>
+          <div className={ win || firstTime || openRules ? 'game__overlay' : 'hide'} />
+          <div className='help' onClick={() => this.toggleShowRules()}>?</div>
+          <div className={ win ? 'game__win' : 'hide'}>
+            <h2 className="game__win__text">Congratulations!</h2>
+            <h3 className="game__win__subtext">You hacked the password</h3>
+            <button className='button pw-container__button'
+              onClick={() => this.handleNewPassword()}
+            >
+              Generate new Password
+            </button>
           </div>
           <div className='pw-container'>
             <div
-              className={ showPassword || win ? 'lock hide' : 'lock'}
+              className={ showPassword || win ? 'hide' : 'lock'}
               onClick={() => this.toggleShowPassword()}>
             </div>
             <h2 className='pw-container__password'
