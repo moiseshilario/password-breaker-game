@@ -3,8 +3,8 @@ import React, { Component } from 'react'
 import { AttemptItem } from './attempt-item'
 import { Rules } from './rules'
 
-const passwordLength = 5
-const repeatedNumberRegex = /(\d)\d*\1/
+const PASSWORD_LENGTH = 5
+const REPEATED_NUMBER_REGEX = /(\d)\d*\1/
 
 export default class Game extends Component {
   constructor() {
@@ -37,7 +37,7 @@ export default class Game extends Component {
     const password = []
     let passwordString = ''
 
-    for (let index = 0; index < passwordLength; index++) {
+    for (let index = 0; index < PASSWORD_LENGTH; index++) {
       const randomIndex = Math.floor(Math.random() * availableNumbers.length)
       const chosenNumber = availableNumbers[randomIndex]
       password.push(chosenNumber)
@@ -61,7 +61,7 @@ export default class Game extends Component {
   checkPassword(numberString) {
     const numberArray = []
     const passwordArray = []
-    for (let index = 0; index < passwordLength; index++) {
+    for (let index = 0; index < PASSWORD_LENGTH; index++) {
       numberArray.push(numberString.charAt(index))
       passwordArray.push(this.state.password.charAt(index))
     }
@@ -69,12 +69,12 @@ export default class Game extends Component {
     let close = 0
     let match = 0
 
-    for (let index = 0; index < passwordLength; index++) {
+    for (let index = 0; index < PASSWORD_LENGTH; index++) {
       const currentNumber = numberArray[index]
       if (currentNumber === passwordArray[index]) {
         match += 1
       } else {
-        for (let index2 = 0; index2 < passwordLength; index2++) {
+        for (let index2 = 0; index2 < PASSWORD_LENGTH; index2++) {
           if (currentNumber === passwordArray[index2] && index !== index2) {
             close += 1
           }
@@ -112,7 +112,7 @@ export default class Game extends Component {
     }
     this.setState({ lengthError: false })
 
-    if (number.match(repeatedNumberRegex)) {
+    if (number.match(REPEATED_NUMBER_REGEX)) {
       this.setState({ repeatedError: true })
       return false
     }
