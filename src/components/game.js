@@ -177,7 +177,8 @@ export default class Game extends Component {
           <div className='pw-container'>
             <div
               className={ showPassword || win ? 'hide' : 'lock'}
-              onClick={() => this.toggleShowPassword()}>
+              // onClick={() => this.toggleShowPassword()}
+            >
             </div>
             <h2 className='pw-container__password'
               onClick={() => this.toggleShowPassword()}
