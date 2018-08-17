@@ -17,11 +17,32 @@ export default class Game extends Component {
       showPassword: false,
       win: false,
       firstTime: localStorage.getItem('firstTime') === 'false' ? false : true,
-      openRules: false
+      openRules: false,
+      lastScrollTop: 0,
+      showRulesButton: true
     }
 
     this.handleKeyPress = this.handleKeyPress.bind(this)
     this.handleRuleButtonClick = this.handleRuleButtonClick.bind(this)
+    this.handleScroll = this.handleScroll.bind(this)
+  }
+
+  componentDidMount() {
+    window.addEventListener('scroll', this.handleScroll)
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll)
+  }
+
+  handleScroll() {
+    const windowPosition = window.pageYOffset
+    if (windowPosition > this.state.lastScrollTop) {
+      this.setState({ showRulesButton: false })
+    } else {
+      this.setState({ showRulesButton: true })
+    }
+    this.setState({ lastScrollTop: windowPosition })
   }
 
   handleRuleButtonClick() {
@@ -136,14 +157,14 @@ export default class Game extends Component {
   }
 
   render() {
-    const { win, password, attempts, repeatedError, lengthError, showPassword, firstTime, openRules } = this.state
+    const { win, password, attempts, repeatedError, lengthError, showPassword, firstTime, openRules, showRulesButton } = this.state
     return (
       <div className='game'>
         { (firstTime || openRules) ? <Rules onClick={this.handleRuleButtonClick}/> : '' }
         <div className='game__content'>
           <h1 className='game__title'>Password Breaker</h1>
           <div className={ win || firstTime || openRules ? 'game__overlay' : 'hide'} />
-          <div className='help' onClick={() => this.toggleShowRules()}>?</div>
+          <div className={ showRulesButton ? 'help' : 'help help--hidden'} onClick={() => this.toggleShowRules()}>?</div>
           <div className={ win ? 'game__win' : 'hide'}>
             <h2 className="game__win__text">Congratulations!</h2>
             <h3 className="game__win__subtext">You hacked the password</h3>

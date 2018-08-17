@@ -94,11 +94,22 @@ body {
     }
 
     .help {
+      background: $dark-black;
       position: fixed;
       bottom: 20px;
       right: 20px;
       padding: 15px;
       border: 2px solid;
+      display: block;
+      cursor: pointer;
+      opacity: 1;
+      z-index: 1;
+      transition: opacity .4s ease, z-index .4s;
+
+      &--hidden {
+        opacity: 0;
+        z-index: -1;
+      }
     }
 
     .rules {
