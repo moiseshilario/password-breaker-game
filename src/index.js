@@ -2,10 +2,10 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import './styles/index.scss'
 
-import Game from './components/game.js'
+import Root from './components/index.js'
 
 ReactDOM.render(
-  <Game />,
+  <Root />,
   document.getElementById('root')
 )
 

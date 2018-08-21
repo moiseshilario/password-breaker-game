@@ -18,12 +18,43 @@ body {
     display: none !important;
   }
 
+  .new-record {
+    font-size: 25px;
+    margin: 50px 0;
+    text-shadow: 6px 5px 1px #000;
+    animation:blinkingText 1s infinite;
+
+    @media (max-width: 770px) {
+      font-size: 20px;
+    }
+  }
+
+  .record-number {
+    font-size: 22px;
+    color: $light-green;
+  }
+
+  .best-record {
+    margin-top: 40px;
+  }
+
+  .total-attempts {
+    font-size: 14px;
+  }
+
+  @keyframes blinkingText{
+    0%   { color: $dark-green; }
+    49%  { color: $dark-green; }
+    50%  { color: $light-green; }
+    100% { color: $light-green; }
+  }
+
   .game {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    background: linear-gradient($black, $dark-black);
+    background: $dark-black;
     min-height: 100vh;
     height: 100%;
 
@@ -43,17 +74,20 @@ body {
     &__title {
       color: $white;
       text-align: center;
+      text-shadow: 5px 7px 1px #000;
     }
 
     &__win {
-      width: 50%;
       text-align: center;
       background: $dark-black;
       border: 3px solid $green;
       padding: 30px;
+      z-index: 9;
+      position: fixed;
+      margin: 0 5px;
 
       @media (max-width: 770px) {
-        width: 70%;
+        padding: 15px;
       }
 
       &__text {
@@ -66,6 +100,10 @@ body {
         @media (max-width: 770px) {
           font-size: 14px;
         }
+      }
+
+      &__status {
+        margin-top: 60px;
       }
     }
 
@@ -113,7 +151,7 @@ body {
     }
 
     .rules {
-      max-width: 500px;
+      max-width: 700px;
       padding: 20px;
       line-height: 1.7;
       position: absolute;
@@ -132,6 +170,10 @@ body {
 
       &__item {
         margin: 30px 0;
+
+        @media (max-width: 500px) {
+          font-size: 13px;
+        }
       }
 
       .button {
@@ -173,11 +215,13 @@ body {
         height: 60px;
         width: 300px;
         background: url('../assets/images/lock.png') center no-repeat;
-        background-color: $light-black-1;
+        background-color: #c11717;
         position: absolute;
         top: 0;
         opacity: 1;
         transition: opacity .1s ease-out;
+        border: 2px solid red;
+        box-shadow: 5px 7px 0px 3px #000;
       }
 
       &__button {
@@ -279,6 +323,16 @@ body {
 
         .report__match {
           color: $light-green;
+        }
+
+        &__number {
+          font-size: 12px;
+        }
+
+        &__report {
+          @media (max-width: 500px) {
+            font-size: 13px;
+          }
         }
       }
     }
