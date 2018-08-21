@@ -1,4 +1,7 @@
 import React, { Component } from 'react'
+import { instanceOf } from 'prop-types'
+
+import { withCookies, Cookies } from 'react-cookie'
 
 import { AttemptItem } from './attempt-item'
 import { Rules } from './rules'
@@ -6,9 +9,10 @@ import { Rules } from './rules'
 const PASSWORD_LENGTH = 5
 const REPEATED_NUMBER_REGEX = /(\d)\d*\1/
 
-export default class Game extends Component {
-  constructor() {
-    super()
+class Game extends Component {
+  constructor(props) {
+    super(props)
+    const { cookies } = props
     this.state = {
       password: this.getRandomNumber(),
       attempts: [],
@@ -19,7 +23,8 @@ export default class Game extends Component {
       firstTime: localStorage.getItem('firstTime') === 'false' ? false : true,
       openRules: false,
       lastScrollTop: 0,
-      showRulesButton: true
+      showRulesButton: true,
+      record: cookies.get('record') || '9999'
     }
 
     this.handleKeyPress = this.handleKeyPress.bind(this)
@@ -114,6 +119,22 @@ export default class Game extends Component {
 
     if (match === 5) {
       this.setState({ win: true })
+
+      const numberOfAttempts = currentAttempt.attemptNumber
+      this.checkRecord(numberOfAttempts)
+    }
+  }
+
+  checkRecord(numberOfAttempts) {
+    if (numberOfAttempts < this.state.record) {
+      const { cookies } = this.props
+      cookies.set('record', numberOfAttempts)
+      this.setState({
+        record: numberOfAttempts,
+        newRecord: true
+      })
+    } else {
+      this.setState({ newRecord: false })
     }
   }
 
@@ -157,7 +178,7 @@ export default class Game extends Component {
   }
 
   render() {
-    const { win, password, attempts, repeatedError, lengthError, showPassword, firstTime, openRules, showRulesButton } = this.state
+    const { win, password, attempts, repeatedError, lengthError, showPassword, firstTime, openRules, showRulesButton, record, newRecord } = this.state
     return (
       <div className='game'>
         { (firstTime || openRules) ? <Rules onClick={this.handleRuleButtonClick}/> : '' }
@@ -166,8 +187,13 @@ export default class Game extends Component {
           <div className={ win || firstTime || openRules ? 'game__overlay' : 'hide'} />
           <div className={ showRulesButton ? 'help' : 'help help--hidden'} onClick={() => this.toggleShowRules()}>?</div>
           <div className={ win ? 'game__win' : 'hide'}>
-            <h2 className="game__win__text">Congratulations!</h2>
-            <h3 className="game__win__subtext">You hacked the password</h3>
+            <h2 className='game__win__text'>Congratulations!</h2>
+            <h3 className='game__win__subtext'>You hacked the password</h3>
+            <div className='game__win__status'></div>
+            { newRecord ? <p className="new-record">NEW RECORD!!!</p> : '' }
+            <p className='total-attempts'>Total attempts: { attempts.length }</p>
+            <p className='best-record'>Best record</p>
+            <p className='record-number'>{ record }</p>
             <button className='button pw-container__button'
               onClick={() => this.handleNewPassword()}
             >
@@ -207,3 +233,9 @@ export default class Game extends Component {
     )
   }
 }
+
+Game.propTypes = {
+  cookies: instanceOf(Cookies).isRequired
+}
+
+export default withCookies(Game)
