@@ -13,7 +13,9 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "prop-types": "^15.6.2",
     "react": "^16.4.1",
+    "react-cookie": "^3.0.3",
     "react-dom": "^16.4.1"
   },
   "devDependencies": {
@@ -25,11 +27,13 @@
     "clean-webpack-plugin": "^0.1.19",
     "css-loader": "^1.0.0",
     "eslint": "^5.2.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.1",
     "eslint-plugin-react": "^7.10.0",
     "gh-pages": "^1.2.0",
     "html-webpack-plugin": "^3.2.0",
     "node-sass": "^4.9.2",
-    "react-cookie": "^3.0.3",
     "react-hot-loader": "^4.3.4",
     "sass-loader": "^7.0.3",
     "style-loader": "^0.21.0",
