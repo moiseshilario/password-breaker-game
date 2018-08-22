@@ -4,7 +4,7 @@ import { instanceOf } from 'prop-types'
 import { withCookies, Cookies } from 'react-cookie'
 
 import { AttemptItem } from './attempt-item'
-import { Rules } from './rules'
+import Rules from './rules'
 
 const PASSWORD_LENGTH = 5
 const REPEATED_NUMBER_REGEX = /(\d)\d*\1/

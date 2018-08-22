@@ -1,347 +1,174 @@
 @import './colors.scss';
 @import url('https://fonts.googleapis.com/css?family=Play|Press+Start+2P|Titillium+Web');
 
-body {
-  color: $white;
-  font-family: 'Press Start 2P', cursive;
-  margin: 0;
+.game {
+  background: $black-1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 100vh;
+  height: 100%;
 
-  &.rules-open {
-    overflow-y: hidden;
+  &__overlay {
+    background-color: $black-opacity;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
-  button {
-    font-family: 'Press Start 2P', cursive;
+  &__title {
+    color: $white;
+    text-align: center;
+    text-shadow: 5px 7px 1px $black;
   }
 
-  .hide {
-    display: none !important;
-  }
-
-  .new-record {
-    font-size: 25px;
-    margin: 50px 0;
-    text-shadow: 6px 5px 1px #000;
-    animation:blinkingText 1s infinite;
-    line-height: 1.5;
+  &__win {
+    background: $black-1;
+    text-align: center;
+    padding: 30px;
+    z-index: 9;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: fit-content;
+    display: block;
+    margin: 0 auto;
+    border: 3px solid $green-dark;
 
     @media (max-width: 770px) {
-      font-size: 20px;
-    }
-  }
-
-  .record-number {
-    font-size: 22px;
-    color: $light-green;
-  }
-
-  .best-record {
-    margin-top: 40px;
-  }
-
-  .total-attempts {
-    font-size: 14px;
-  }
-
-  @keyframes blinkingText{
-    0%   { color: $dark-green; }
-    49%  { color: $dark-green; }
-    50%  { color: $light-green; }
-    100% { color: $light-green; }
-  }
-
-  .game {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    background: $dark-black;
-    min-height: 100vh;
-    height: 100%;
-
-    &__overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: $opacity-black;
-      z-index: 2;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      padding: 15px;
     }
 
-    &__title {
-      color: $white;
-      text-align: center;
-      text-shadow: 5px 7px 1px #000;
+    &__text {
+      @media (max-width: 770px) {
+        font-size: 16px;
+      }
     }
 
-    &__win {
-      text-align: center;
-      background: $dark-black;
-      border: 3px solid $green;
-      padding: 30px;
-      z-index: 9;
-      position: fixed;
-      width: fit-content;
-      left: 0;
-      right: 0;
-      display: block;
-      margin: 0 auto;
-      top: 50%;
-      transform: translateY(-50%);
+    &__subtext {
+      @media (max-width: 770px) {
+        font-size: 14px;
+      }
+    }
+
+    &__status {
+      margin-top: 60px;
+    }
+
+    .new-record {
+      font-size: 25px;
+      margin: 50px 0;
+      text-shadow: 6px 5px 1px $black;
+      animation:blinkingText 1s infinite;
+      line-height: 1.5;
 
       @media (max-width: 770px) {
-        padding: 15px;
-      }
-
-      &__text {
-        @media (max-width: 770px) {
-          font-size: 16px;
-        }
-      }
-
-      &__subtext {
-        @media (max-width: 770px) {
-          font-size: 14px;
-        }
-      }
-
-      &__status {
-        margin-top: 60px;
+        font-size: 20px;
       }
     }
 
-    .error {
-      color: $error;
-      line-height: 1.5;
+    .record-number {
+      font-size: 22px;
+      color: $green-light;
     }
 
-    .button {
-      border: none;
-      color: white;
-      padding: 15px 32px;
-      text-align: center;
-      text-decoration: none;
-      font-size: 16px;
-      min-width: 200px;
-      cursor: pointer;
-
-      &:focus {
-        outline: none;
-      }
-
-      &:active {
-        transform: translateY(4px);
-      }
+    .best-record {
+      margin-top: 40px;
     }
 
-    .help {
-      background: $dark-black;
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      padding: 15px;
-      border: 2px solid;
-      display: block;
-      cursor: pointer;
-      opacity: 1;
-      z-index: 1;
-      transition: opacity .4s ease, z-index .4s;
+    .total-attempts {
+      font-size: 14px;
+    }
+  }
 
-      &--hidden {
-        opacity: 0;
-        z-index: -1;
-      }
+  .error {
+    color: $error;
+    line-height: 1.5;
+  }
+
+  .button {
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    min-width: 200px;
+    cursor: pointer;
+
+    &:focus {
+      outline: none;
     }
 
-    .rules {
-      max-width: 700px;
-      padding: 20px;
-      line-height: 1.7;
+    &:active {
+      transform: translateY(4px);
+    }
+  }
+
+  .help {
+    background: $black-1;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 15px;
+    border: 2px solid;
+    display: block;
+    cursor: pointer;
+    opacity: 1;
+    z-index: 1;
+    transition: opacity .4s ease, z-index .4s;
+
+    &--hidden {
+      opacity: 0;
+      z-index: -1;
+    }
+  }
+
+  .pw-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
+    .lock {
+      height: 60px;
+      width: 300px;
+      background: url('../assets/images/lock.png') center no-repeat;
+      background-color: #c11717;
       position: absolute;
-      z-index: 3;
-      background: #222;
-      border: 5px solid #4CAF50;
-
-      @media (min-width: 500px) {
-        top: 50%;
-        transform: translateY(-50%);
-      }
-
-      &__title {
-        text-align: center;
-      }
-
-      &__item {
-        margin: 30px 0;
-
-        @media (max-width: 500px) {
-          font-size: 13px;
-        }
-      }
-
-      .button {
-        color: $black;
-        margin: 0 auto;
-        display: block;
-
-        &:active {
-          transform: translateY(4px);
-        }
-      }
-
-      &__objective {
-        text-align: center;
-      }
-
-      &__attention {
-        color: $error;
-      }
-
-      &__close {
-        color: $green;
-      }
-
-      &__match {
-        color: $light-green;
-      }
+      top: 0;
+      opacity: 1;
+      transition: opacity .1s ease-out;
+      border: 2px solid red;
+      box-shadow: 5px 7px 0px 3px $black;
     }
 
-
-    .pw-container {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-
-      .lock {
-        height: 60px;
-        width: 300px;
-        background: url('../assets/images/lock.png') center no-repeat;
-        background-color: #c11717;
-        position: absolute;
-        top: 0;
-        opacity: 1;
-        transition: opacity .1s ease-out;
-        border: 2px solid red;
-        box-shadow: 5px 7px 0px 3px #000;
-      }
-
-      &__button {
-        background-color: $light-black-2;
-        font-size: 12px;
-        transition: background-color .2s ease;
-        margin-top: 30px;
-
-        &:hover {
-          background-color: #444;
-        }
-      }
-    }
-
-    .numbers-container {
-      display: flex;
-      justify-content: space-between;
-      padding: 0;
-      flex-wrap: wrap;
-      max-width: 430px;
-    }
-
-    .number {
-      list-style: none;
-      width: 20px;
-      height: 20px;
-      margin: 10px;
-      padding: 20px;
-      border-radius: 3px;
-      background-color: $light-black-2;
-      text-align: center;
-      border: 2px solid $light-black-1;
-
-      @media (max-width: 500px) {
-        margin: 5px
-      }
-    }
-
-    .disabled {
-      background-color: $light-black-3;
-    }
-
-    .attempt {
-      display: flex;
-      align-items: center;
-      flex-direction: column;
+    &__button {
+      background-color: $black-4;
+      font-size: 12px;
+      transition: background-color .2s ease;
       margin-top: 30px;
-      text-align: center;
 
-      &__button {
-        background-color: $green;
-        margin-bottom: 20px;
-        margin-top: 20px;
-      }
-
-      &__number[type=number] {
-        -webkit-appearance: none;
-        border: none;
-        border-bottom: 2px solid $white;
-        border-radius: 0;
-        padding: 10px;
-        font-size: 30px;
-        background-color: transparent;
-        color: $white;
-        font-family: 'Press Start 2P', cursive;
-        max-width: 150px;
-        transition: border-color .2s ease;
-      }
-
-      input[type=number]::-webkit-inner-spin-button,
-      input[type=number]::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-      }
-
-      input:focus {
-        outline: none;
-        border-color: $green;
-      }
-
-      &__list {
-        list-style-type: none;
-        padding: 0;
-        width: 100%;
-        display: flex;
-        flex-direction: column-reverse;
-      }
-
-      &__item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 2px solid $light-black-1;
-        padding: 0 20px;
-
-        .report__close {
-          color: $green;
-        }
-
-        .report__match {
-          color: $light-green;
-        }
-
-        &__number {
-          font-size: 12px;
-        }
-
-        &__report {
-          @media (max-width: 500px) {
-            font-size: 13px;
-          }
-        }
+      &:hover {
+        background-color: $black-3;
       }
     }
   }
+}
+
+@keyframes blinkingText{
+  0%   { color: $green; }
+  49%  { color: $green; }
+  50%  { color: $green-light; }
+  100% { color: $green-light; }
 }

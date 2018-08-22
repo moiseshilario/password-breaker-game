@@ -1,0 +1,17 @@
+body {
+  color: $white;
+  font-family: 'Press Start 2P', cursive;
+  margin: 0;
+
+  &.rules-open {
+    overflow-y: hidden;
+  }
+
+  button {
+    font-family: 'Press Start 2P', cursive;
+  }
+
+  .hide {
+    display: none !important;
+  }
+}
