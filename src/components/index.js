@@ -1,6 +1,7 @@
 import React from 'react'
-import Game from './game'
 import { CookiesProvider } from 'react-cookie'
+
+import Game from './game'
 
 export default function Root() {
   return (
