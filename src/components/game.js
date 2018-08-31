@@ -9,7 +9,7 @@ import Rules from './rules'
 const PASSWORD_LENGTH = 5
 const REPEATED_NUMBER_REGEX = /(\d)\d*\1/
 
-class Game extends React.Component {
+export class Game extends React.Component {
   constructor(props) {
     super(props)
     const { cookies } = props
@@ -30,7 +30,7 @@ class Game extends React.Component {
     }
 
     this.handleKeyPress = this.handleKeyPress.bind(this)
-    this.handleRuleButtonClick = this.handleRuleButtonClick.bind(this)
+    this.handleRulesButtonClick = this.handleRulesButtonClick.bind(this)
     this.handleScroll = this.handleScroll.bind(this)
   }
 
@@ -52,7 +52,7 @@ class Game extends React.Component {
     this.setState({ lastScrollTop: windowPosition })
   }
 
-  handleRuleButtonClick() {
+  handleRulesButtonClick() {
     localStorage.setItem('firstTime', false)
     this.setState({
       firstTime: false,
@@ -142,27 +142,29 @@ class Game extends React.Component {
 
   handleNewAttempt() {
     const inputValue = document.querySelector('.attempt__number').value
-    if (!this.validateAttempt(inputValue)) {
+    if (this.hasErrors(inputValue)) {
       return
     }
 
     this.checkPassword(inputValue)
   }
 
-  validateAttempt(number) {
-    if (number.length !== 5) {
-      this.setState({ lengthError: true })
-      return false
-    }
-    this.setState({ lengthError: false })
+  hasErrors(number) {
+    const lengthError = this.checkNumberLength(number)
+    this.setState({ lengthError })
 
-    if (number.match(REPEATED_NUMBER_REGEX)) {
-      this.setState({ repeatedError: true })
-      return false
-    }
-    this.setState({ repeatedError: false })
+    const repeated = this.checkRepeatedNumber(number)
+    this.setState({ repeatedError: repeated })
 
-    return true
+    return lengthError || repeated
+  }
+
+  checkNumberLength(number) {
+    return number.length !== 5
+  }
+
+  checkRepeatedNumber(number) {
+    return number.match(REPEATED_NUMBER_REGEX) !== null
   }
 
   toggleShowPassword() {
@@ -195,7 +197,7 @@ class Game extends React.Component {
     } = this.state
     return (
       <div className="game">
-        {(firstTime || openRules) && <Rules onClick={this.handleRuleButtonClick}/>}
+        {(firstTime || openRules) && <Rules onClick={this.handleRulesButtonClick}/>}
         <div className="game__content">
           <h1 className="game__title">Password Breaker</h1>
           <div className={win || firstTime || openRules ? 'game__overlay' : 'hide'} />
