@@ -145,8 +145,7 @@
       width: 300px;
       background: url('../assets/images/lock.png') center no-repeat;
       background-color: #c11717;
-      position: absolute;
-      top: 0;
+      position: relative;
       opacity: 1;
       transition: opacity .1s ease-out;
       border: 2px solid red;

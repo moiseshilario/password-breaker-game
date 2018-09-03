@@ -72,7 +72,7 @@ export class Game extends React.Component {
       passwordString += chosenNumber
       availableNumbers = availableNumbers.filter(number => number !== chosenNumber)
     }
-    console.log(passwordString);
+
     return passwordString
   }
 
