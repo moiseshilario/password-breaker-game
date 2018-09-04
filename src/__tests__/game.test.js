@@ -26,7 +26,7 @@ describe('<Game />', () => {
 
   it(`generates a random password with the right length (${PASSWORD_LENGTH})`, () => {
     const randomNumber = wrapper.instance().getRandomNumber()
-    expect(randomNumber.length).toBe(5)
+    expect(randomNumber.length).toBe(PASSWORD_LENGTH)
   })
 
   describe('Rules', () => {
@@ -35,7 +35,7 @@ describe('<Game />', () => {
     })
 
     it('doesn\'t show rules on reload', () => {
-      wrapper.setState({ firstTime: false })
+      wrapper.setState({ openRules: false })
       expect(wrapper.find('Rules').length).toBe(0)
     })
   })
