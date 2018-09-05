@@ -5,22 +5,24 @@ import { withCookies, Cookies } from 'react-cookie'
 
 import { AttemptItem } from './attempt-item'
 import Rules from './rules'
+import Errors from './errors'
+import Win from './win'
 
 const PASSWORD_LENGTH = 5
 const REPEATED_NUMBER_REGEX = /(\d)\d*\1/
 
-class Game extends React.Component {
+export class Game extends React.Component {
   constructor(props) {
     super(props)
     const { cookies } = props
     this.state = {
       attempts: [],
-      /* eslint-disable no-unneeded-ternary */
-      firstTime: localStorage.getItem('firstTime') === 'false' ? false : true,
-      /* eslint-enable no-unneeded-ternary */
       lastScrollTop: 0,
       lengthError: false,
-      openRules: false,
+      newRecord: false,
+      /* eslint-disable no-unneeded-ternary */
+      openRules: localStorage.getItem('firstTime') === 'false' ? false : true,
+      /* eslint-enable no-unneeded-ternary */
       password: this.getRandomNumber(),
       record: cookies.get('record') || '9999',
       repeatedError: false,
@@ -30,8 +32,9 @@ class Game extends React.Component {
     }
 
     this.handleKeyPress = this.handleKeyPress.bind(this)
-    this.handleRuleButtonClick = this.handleRuleButtonClick.bind(this)
+    this.handleRulesButtonClick = this.handleRulesButtonClick.bind(this)
     this.handleScroll = this.handleScroll.bind(this)
+    this.handleNewPassword = this.handleNewPassword.bind(this)
   }
 
   componentDidMount() {
@@ -52,7 +55,7 @@ class Game extends React.Component {
     this.setState({ lastScrollTop: windowPosition })
   }
 
-  handleRuleButtonClick() {
+  handleRulesButtonClick() {
     localStorage.setItem('firstTime', false)
     this.setState({
       firstTime: false,
@@ -142,27 +145,29 @@ class Game extends React.Component {
 
   handleNewAttempt() {
     const inputValue = document.querySelector('.attempt__number').value
-    if (!this.validateAttempt(inputValue)) {
+    if (this.hasErrors(inputValue)) {
       return
     }
 
     this.checkPassword(inputValue)
   }
 
-  validateAttempt(number) {
-    if (number.length !== 5) {
-      this.setState({ lengthError: true })
-      return false
-    }
-    this.setState({ lengthError: false })
+  hasErrors(number) {
+    const lengthError = this.checkNumberLength(number)
+    this.setState({ lengthError })
 
-    if (number.match(REPEATED_NUMBER_REGEX)) {
-      this.setState({ repeatedError: true })
-      return false
-    }
-    this.setState({ repeatedError: false })
+    const repeated = this.checkRepeatedNumber(number)
+    this.setState({ repeatedError: repeated })
 
-    return true
+    return lengthError || repeated
+  }
+
+  checkNumberLength(number) {
+    return number.length !== 5
+  }
+
+  checkRepeatedNumber(number) {
+    return number.match(REPEATED_NUMBER_REGEX) !== null
   }
 
   toggleShowPassword() {
@@ -181,55 +186,37 @@ class Game extends React.Component {
 
   render() {
     const {
-      win,
-      password,
       attempts,
-      repeatedError,
       lengthError,
-      showPassword,
-      firstTime,
-      openRules,
-      showRulesButton,
-      record,
       newRecord,
+      openRules,
+      password,
+      record,
+      repeatedError,
+      showRulesButton,
+      win,
     } = this.state
     return (
       <div className="game">
-        {(firstTime || openRules) && <Rules onClick={this.handleRuleButtonClick}/>}
+        {openRules && <Rules onClick={this.handleRulesButtonClick}/>}
         <div className="game__content">
           <h1 className="game__title">Password Breaker</h1>
-          <div className={win || firstTime || openRules ? 'game__overlay' : 'hide'} />
+          <div className={win || openRules ? 'game__overlay' : 'hide'} />
           <div className={showRulesButton ? 'help' : 'help help--hidden'}
             onClick={() => this.toggleShowRules()}>?
           </div>
-          <div className={win ? 'game__win' : 'hide'}>
-            <h2 className="game__win__text">Congratulations!</h2>
-            <h3 className="game__win__subtext">You hacked the password</h3>
-            <div className="game__win__status"></div>
-            {newRecord && <p className="new-record">NEW RECORD!!!</p>}
-            <p className="total-attempts">Total attempts: { attempts.length }</p>
-            <p className="best-record">Best record</p>
-            <p className="record-number">{ record }</p>
-            <button className="button pw-container__button"
-              onClick={() => this.handleNewPassword()}
-            >
-              Generate new Password
-            </button>
-          </div>
+          <Win attempts={attempts.length}
+            onClick={this.handleNewPassword}
+            newRecord={newRecord}
+            record={record}
+            win={win}
+          />
           <div className="pw-container">
-            <div
-              className={showPassword || win ? 'hide' : 'lock'}
-              // onClick={() => this.toggleShowPassword()}
-            >
-            </div>
-            <h2 className="pw-container__password"
-              onClick={() => this.toggleShowPassword()}
-            >{password}</h2>
+            { win ? <h2 className="pw-container__password">{password}</h2> : <div className="lock"></div>}
           </div>
           <div className="attempt">
             <input type="number" className="attempt__number" onKeyPress={this.handleKeyPress}/>
-            {repeatedError && <p className="error">Cannot use repeated numbers!</p>}
-            {lengthError && <p className="error">The password needs to be 5 numbers!</p>}
+            <Errors lengthError={lengthError} repeatedError={repeatedError} />
             <button onClick={() => this.handleNewAttempt()} className="button attempt__button">Hack</button>
             <ul className="attempt__list">
               {
