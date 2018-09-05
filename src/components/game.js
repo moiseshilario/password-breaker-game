@@ -6,6 +6,7 @@ import { withCookies, Cookies } from 'react-cookie'
 import { AttemptItem } from './attempt-item'
 import Rules from './rules'
 import Errors from './errors'
+import Win from './win'
 
 const PASSWORD_LENGTH = 5
 const REPEATED_NUMBER_REGEX = /(\d)\d*\1/
@@ -18,6 +19,7 @@ export class Game extends React.Component {
       attempts: [],
       lastScrollTop: 0,
       lengthError: false,
+      newRecord: false,
       /* eslint-disable no-unneeded-ternary */
       openRules: localStorage.getItem('firstTime') === 'false' ? false : true,
       /* eslint-enable no-unneeded-ternary */
@@ -32,6 +34,7 @@ export class Game extends React.Component {
     this.handleKeyPress = this.handleKeyPress.bind(this)
     this.handleRulesButtonClick = this.handleRulesButtonClick.bind(this)
     this.handleScroll = this.handleScroll.bind(this)
+    this.handleNewPassword = this.handleNewPassword.bind(this)
   }
 
   componentDidMount() {
@@ -183,15 +186,15 @@ export class Game extends React.Component {
 
   render() {
     const {
-      win,
-      password,
       attempts,
-      repeatedError,
       lengthError,
-      openRules,
-      showRulesButton,
-      record,
       newRecord,
+      openRules,
+      password,
+      record,
+      repeatedError,
+      showRulesButton,
+      win,
     } = this.state
     return (
       <div className="game">
@@ -202,20 +205,12 @@ export class Game extends React.Component {
           <div className={showRulesButton ? 'help' : 'help help--hidden'}
             onClick={() => this.toggleShowRules()}>?
           </div>
-          <div className={win ? 'game__win' : 'hide'}>
-            <h2 className="game__win__text">Congratulations!</h2>
-            <h3 className="game__win__subtext">You hacked the password</h3>
-            <div className="game__win__status"></div>
-            {newRecord && <p className="new-record">NEW RECORD!!!</p>}
-            <p className="total-attempts">Total attempts: { attempts.length }</p>
-            <p className="best-record">Best record</p>
-            <p className="record-number">{ record }</p>
-            <button className="button pw-container__button"
-              onClick={() => this.handleNewPassword()}
-            >
-              Generate new Password
-            </button>
-          </div>
+          <Win attempts={attempts.length}
+            onClick={this.handleNewPassword}
+            newRecord={newRecord}
+            record={record}
+            win={win}
+          />
           <div className="pw-container">
             { win ? <h2 className="pw-container__password">{password}</h2> : <div className="lock"></div>}
           </div>
